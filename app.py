@@ -11,18 +11,18 @@ st.set_page_config(
 st.title("🎓 프로페서 프로토콜")
 st.subheader("교수님 답장 3분 컷! AI 이메일 생성기")
 
-# 2. API 키 설정 (안전장치 포함)
-# 서버에 키가 있으면 그걸 쓰고, 없으면 입력창을 띄웁니다.
+# 2. API 키 설정 (안전장치)
+# 서버(Secrets)에 키가 있으면 그걸 쓰고, 없으면 입력창을 띄워주는 '하이브리드' 방식
 api_key = None
 
 if "OPENAI_API_KEY" in st.secrets:
     api_key = st.secrets["OPENAI_API_KEY"]
 else:
-    st.warning("⚠️ 서버에 API 키가 설정되지 않았습니다. 아래에 키를 직접 입력하세요.")
+    st.warning("⚠️ 서버에 API 키가 설정되지 않았습니다. 테스트를 위해 아래에 키를 직접 입력하세요.")
     api_key = st.text_input("OpenAI API Key", type="password")
 
-# 3. 사용자 입력 받기
-with st.form("form"):
+# 3. 사용자 입력 폼 (요청하신 디자인 적용 완료)
+with st.form("email_form"):
     col1, col2 = st.columns(2)
     with col1:
         prof_name = st.text_input("교수님 성함", placeholder="예: 김철수 교수님")
@@ -31,17 +31,22 @@ with st.form("form"):
         course_name = st.text_input("강의명", placeholder="예: 분자생물학")
         my_id = st.text_input("학번", placeholder="예: 20251234")
     
-    category = st.radio("메일 목적", ["성적 이의 제기", "출석 인정 문의", "면담 요청", "과제 관련 문의"])
-    reason = st.text_area("상세 내용", placeholder="상황을 구체적으로 적어주세요.")
+    category = st.radio(
+        "메일을 보내는 목적:",
+        ["성적 이의 제기 (정정 요청)", "출석 인정(결석) 문의", "면담/상담 요청", "과제 제출 지각/오류"]
+    )
     
-    submit = st.form_submit_button("이메일 생성하기 ✨")
+    reason = st.text_area("구체적인 사유 (AI가 참고할 내용)", placeholder="예: 기말고사 3번 문제 정답이랑 제 답안이 유사한 것 같아 확인 부탁드림")
+    
+    submit_btn = st.form_submit_button("이메일 생성하기 ✨")
 
-# 4. AI 생성 로직 (질문자님이 주신 코드 활용)
-if submit:
+# 4. AI 생성 로직
+if submit_btn:
+    # 예외 처리: 키가 없거나 필수 정보가 빠졌을 때
     if not api_key:
-        st.error("API 키가 없습니다. 키를 입력하거나 서버 설정을 확인하세요.")
+        st.error("API 키가 없습니다. Secrets 설정을 확인하거나 키를 입력해주세요.")
     elif not prof_name or not reason:
-        st.warning("필수 정보(교수님 성함, 상세 내용)를 입력해주세요.")
+        st.warning("교수님 성함과 구체적인 사유는 필수 입력 사항입니다.")
     else:
         try:
             # 클라이언트 생성
@@ -49,7 +54,7 @@ if submit:
             
             with st.spinner("AI가 가장 정중한 표현을 고르는 중입니다..."):
                 
-                # --- [질문자님의 핵심 프롬프트] ---
+                # --- [확정된 핵심 프롬프트] ---
                 prompt = f"""
                 당신은 예의 바르고 논리적인 대학생입니다. 아래 정보를 바탕으로 교수님께 보낼 정중한 이메일을 작성하세요.
                 
@@ -75,7 +80,7 @@ if submit:
                 email_content = response.choices[0].message.content
                 # -------------------------------
 
-                st.success("생성 완료! 복사해서 사용하세요.")
+                st.success("생성 완료! 아래 내용을 복사해서 사용하세요.")
                 st.code(email_content, language="text")
                 st.info("💡 Tip: 내용은 상황에 맞게 조금 수정해서 보내세요.")
                 
