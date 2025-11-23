@@ -42,17 +42,33 @@ if submit_btn:
         try:
             client = OpenAI(api_key=api_key)
             prompt = f"""
-            수신: {prof_name}, 발신: {my_name}, 강의: {course_name}, 목적: {category}
-            내용: {reason}
-            위 정보를 바탕으로 대학생이 교수님께 보내는 매우 정중한 이메일을 작성하세요.
-            """
-            
-            with st.spinner("AI가 작성 중입니다..."):
+                당신은 예의 바르고 논리적인 대학생입니다. 아래 정보를 바탕으로 교수님께 보낼 정중한 이메일을 작성하세요.
+                
+                [정보]
+                - 수신: {prof_name}
+                - 강의: {course_name}
+                - 발신: {my_name} ({my_id})
+                - 목적: {category}
+                - 상세 내용: {reason}
+                
+                [조건]
+                1. 제목은 한눈에 용건을 알 수 있게 작성 (예: [문의] 과목명 - 이름)
+                2. 서두에 정중한 인사와 소속 밝힘
+                3. 본문은 '배움을 구하는 자세'로 정중하게 작성 (따지는 말투 금지)
+                4. 마지막에 바쁘신 와중에 읽어주셔서 감사하다는 인사 포함
+                """
+
                 response = client.chat.completions.create(
                     model="gpt-4o-mini",
                     messages=[{"role": "user", "content": prompt}]
                 )
-                st.success("생성 완료!")
-                st.code(response.choices[0].message.content)
+                
+                email_content = response.choices[0].message.content
+                
+                st.success("생성 완료! 복사해서 사용하세요.")
+                st.code(email_content, language="text")
+                st.info("💡 Tip: 내용은 상황에 맞게 조금 수정해서 보내세요.")
+       
         except Exception as e:
             st.error(f"에러 발생: {e}")
+
