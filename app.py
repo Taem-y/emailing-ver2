@@ -37,7 +37,7 @@ with st.form("email_form"):
         ["수업 내용 질의", "성적 이의 제기(정정 요청)", "출석 인정 문의", "과제 제출 지각/오류", "기타"]
     )
     
-    reason = st.text_area("구체적인 사유 (AI가 참고할 내용을 편하게 쓰면 됨!)", placeholder="예: 3월 27일 대외활동으로 인한 결석, 사유서 제출 예정")
+    reason = st.text_area("구체적인 사유 (AI가 참고할 내용을 편하게 쓰면 됨!)", placeholder="예: LMS 오류로 과제가 제출되지 않았는데 이메일로 제출해도 괜찮을지")
     
     submit_btn = st.form_submit_button("이메일 생성하기 ✨")
 
@@ -134,6 +134,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
