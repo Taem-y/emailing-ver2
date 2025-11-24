@@ -87,16 +87,17 @@ if submit_btn:
                 st.code(email_content, language="text")
                 st.info("💡 Tip: 내용은 상황에 맞게 조금 수정해서 보내세요.")
     # ... (AI 생성 코드 밑에) ...
-    email_content = response.choices[0].message.content
+                email_content = response.choices[0].message.content
 
 # [추가] 내 서버 기록(Log)에 몰래 남기기
-    print(f"--------\n[사용자] {my_name}\n[목적] {category}\n[내용] {reason}\n[결과] {email_content}\n--------")
+                print(f"--------\n[사용자] {my_name}\n[목적] {category}\n[내용] {reason}\n[결과] {email_content}\n--------")
 
     st.success("생성 완료!")
     st.code(email_content)
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
