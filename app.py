@@ -56,7 +56,16 @@ if submit_btn:
                 
                 # --- [확정된 핵심 프롬프트] ---
                 prompt = f"""
-                당신은 예의 바르고 논리적인 대학생입니다. 아래 정보를 바탕으로 교수님께 보낼 정중한 이메일을 작성하세요.
+                당신은 예의 바르고 논리적인 대학생입니다. 아래 정보와 예시를 바탕으로 교수님께 보낼 정중한 이메일을 작성하세요.
+                [예시]
+                제목: [미생물학2] 15강 End replication problem of DNA 질문드립니다
+                내용:
+                안녕하세요, 미생물학2 01분반 수강중인 2024140312 생명공학부 조예은입니다.
+                Eukaryote의 end replication problem of DNA와 관련하여 궁금한 점이 있어 질문 드립니다.
+                lagging strand로부터 합성된 Okazaki fragment의 5' 말단 마다 RNA primer가 붙어있고, RNA primer을 제거하고 그 자리에 DNA 조각을 집어넣고 틈을 연결하기 위해서 양 끝(위,아래)에 3'-OH와 5'-P가 모두 있어야 한다고 이해했습니다. 그래서 맨 마지막에 합성된 Okazaki fragment의 경우 5' 말단의 RNA primer을 제거하고 나면 새로운 DNA가닥을 연결시킬 3'-OH가 없어서 RNA primer만 제거할 뿐 새로운 DNA 가닥을 연결할 수 없으므로 복제가 진행될 때마다 새로 합성된 DNA의 5' 말단이 짧아지게 되는게 end replication problem이라고 이해했습니다. 
+                궁금한 점은 위 이유 때문에 DNA가 짧아지는게 문제라면, lagging strand 뿐만 아니라 leading strand에서도 end problem이 존재하는 것인가요? leading strand에서도 5' 말단에 RNA primer가 존재하고, 3'-OH가 없는 것은 마찬가지이니까, 똑같이 짧아지게 되는 문제가 발생하나요? ppt에는 leading strand 언급은 없이 오직 lagging strand의 Okazaki fragment만을 언급하고 있어 이 점에서 의문이 들었습니다
+                감사합니다
+
                 
                 [정보]
                 - 수신: {prof_name}
@@ -86,5 +95,6 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
