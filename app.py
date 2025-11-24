@@ -1,5 +1,8 @@
 import streamlit as st
 from openai import OpenAI
+from streamlit_gsheets import GSheetsConnection
+import pandas as pd
+from datetime import datetime
 
 # 1. 화면 기본 설정
 st.set_page_config(
@@ -122,10 +125,37 @@ if submit_btn:
                 st.success("생성 완료! 아래 내용을 복사해서 사용하세요.")
                 st.code(email_content, language="text")
                 st.info("💡 Tip: 내용은 상황에 맞게 조금 수정해서 보내세요.")
-           
+                try:
+                # 1. 구글 시트 연결
+                    conn = st.connection("gsheets", type=GSheetsConnection)
+                
+                # 2. 기존 데이터 가져오기
+                    existing_data = conn.read(worksheet="시트1") # 시트 이름 확인!
+                
+                # 3. 새 데이터 만들기
+                    new_data = pd.DataFrame([{
+                        "날짜": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                        "사용자": f"{my_name} ({my_id})",
+                        "교수님": prof_name,
+                        "목적": category,
+                        "내용": reason,
+                        "생성된이메일": email_content
+                    }])
+                
+                # 4. 합쳐서 다시 저장 (업데이트)
+                    updated_df = pd.concat([existing_data, new_data], ignore_index=True)
+                    conn.update(worksheet="시트1", data=updated_df)
+                
+                    print("-> 구글 시트 저장 성공!", flush=True)
+                
+                except Exception as e:
+                    st.error("데이터 저장 중 오류가 발생했습니다.")
+                    print(f"-> 저장 실패: {e}", flush=True)
+                    
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
