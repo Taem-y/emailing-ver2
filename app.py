@@ -49,8 +49,8 @@ if submit_btn:
     # 예외 처리: 키가 없거나 필수 정보가 빠졌을 때
     if not api_key:
         st.error("API 키가 없습니다. Secrets 설정을 확인하거나 키를 입력해주세요.")
-    elif not prof_name or not reason:
-        st.warning("교수님 성함과 구체적인 사유는 필수 입력 사항입니다.")
+    elif not prof_name or not my_name or not course_name or not my_id or not reason:
+        st.warning("⚠️ 빈칸이 있습니다! 모든 정보를 입력해야 이메일을 생성할 수 있어요.")
     else:
         try:
             # 클라이언트 생성
@@ -164,6 +164,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
