@@ -145,7 +145,7 @@ if submit_btn:
                         "교수님": prof_name,
                         "목적": category,
                         "내용": reason,
-                        "생성된이메일": email_content
+                        "생성된 이메일": email_content
                     }])
                 
                 # 4. [기존 데이터] + [새 데이터] 합치기 (Concatenate)
@@ -163,6 +163,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
