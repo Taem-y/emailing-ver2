@@ -76,7 +76,7 @@ if submit_btn:
                 """
 
                 response = client.chat.completions.create(
-                    model="ft:gpt-4o-mini-2024-07-18:team-y:professorprotocol-ver251124:CfKVjgPF",
+                    model="ft:gpt-4o-mini-2024-07-18:team-y:professorprotocol-ver251124-2:CfM9ZJjU",
                     messages=[{"role": "user", "content": prompt}]
                 )
                 
@@ -97,6 +97,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
