@@ -135,7 +135,7 @@ if submit_btn:
                     try:
                         existing_data = conn.read(worksheet="시트1", usecols=list(range(6)), ttl=0)
                         existing_data = existing_data.dropna(how="all") # 빈 줄 제거
-                    exceptException:
+                    except Exception:
                     # 만약 시트가 텅 비어있으면 빈 틀을 만듭니다.
                         existing_data = pd.DataFrame(columns=["날짜", "사용자", "교수님", "목적", "내용", "생성된이메일"])
                 
@@ -164,6 +164,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
