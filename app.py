@@ -79,6 +79,7 @@ if submit_btn:
                 2. 서두에 정중한 인사와 소속 밝힘
                 3. 본문은 '배움을 구하는 자세'로 정중하게 작성 (따지는 말투 금지)
                 4. 마지막에 바쁘신 와중에 읽어주셔서 감사하다는 인사 포함
+                5. 위에 붙여준 예시를 참고하여 작성
                 """
 
                 response = client.chat.completions.create(
@@ -95,6 +96,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
