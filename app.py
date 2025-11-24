@@ -119,14 +119,6 @@ if submit_btn:
                 )
                 
                 email_content = response.choices[0].message.content
-                print("==========================================")
-                print(f" [사용자] {my_name} ({my_id})")
-                print(f" [수신] {prof_name} / [목적] {category}")
-                print(f" [입력내용] {reason}")
-                print(f" [AI결과] {email_content}") # 결과까지 다 볼 수 있음
-                print("==========================================")
-                # -------------------------------
-
                 st.success("생성 완료! 아래 내용을 복사해서 사용하세요.")
                 st.code(email_content, language="text")
                 st.info("💡 Tip: 내용은 상황에 맞게 조금 수정해서 보내세요.")
@@ -134,6 +126,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
