@@ -92,11 +92,12 @@ if submit_btn:
 # [추가] 내 서버 기록(Log)에 몰래 남기기
                 print(f"--------\n[사용자] {my_name}\n[목적] {category}\n[내용] {reason}\n[결과] {email_content}\n--------")
 
-    st.success("생성 완료!")
-    st.code(email_content)
+                st.success("생성 완료!")
+                st.code(email_content)
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
