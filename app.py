@@ -29,6 +29,7 @@ with st.form("email_form"):
         my_name = st.text_input("내 이름", placeholder="예: 홍길동")
     with col2:
         course_name = st.text_input("강의명", placeholder="예: 분자생물학")
+        my_division = st.text_input("학과/학부", placeholder="예: 생명공학부")
         my_id = st.text_input("학번", placeholder="예: 20251234")
     
     category = st.radio(
@@ -36,7 +37,7 @@ with st.form("email_form"):
         ["수업 내용 질의", "성적 이의 제기 (정정 요청)", "출석 인정(결석) 문의", "면담/상담 요청", "과제 제출 지각/오류", "기타"]
     )
     
-    reason = st.text_area("구체적인 사유 (AI가 참고할 내용)", placeholder="예: 기말고사 3번 문제 정답이랑 제 답안이 유사한 것 같아 확인 부탁드림")
+    reason = st.text_area("구체적인 사유 (AI가 참고할 내용을 편하게 쓰면 됨!)", placeholder="예: 3월 27일 대외활동으로 인한 결석, 사유서 제출 예정")
     
     submit_btn = st.form_submit_button("이메일 생성하기 ✨")
 
@@ -86,7 +87,7 @@ if submit_btn:
                 [정보]
                 - 수신: {prof_name}
                 - 강의: {course_name}
-                - 발신: {my_name} ({my_id})
+                - 발신: {my_name} ({my_division} , {my_id})
                 - 목적: {category}
                 - 상세 내용: {reason}
                 
@@ -112,6 +113,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
