@@ -125,14 +125,21 @@ if submit_btn:
                 st.success("생성 완료! 아래 내용을 복사해서 사용하세요.")
                 st.code(email_content, language="text")
                 st.info("💡 Tip: 내용은 상황에 맞게 조금 수정해서 보내세요.")
+                # --- [데이터베이스 누적 저장 로직 (수정됨)] ---
                 try:
                 # 1. 구글 시트 연결
                     conn = st.connection("gsheets", type=GSheetsConnection)
                 
-                # 2. 기존 데이터 가져오기
-                    existing_data = conn.read(worksheet="시트1") # 시트 이름 확인!
+                # 2. 기존 데이터 가져오기 (이게 핵심!)
+                # ttl=0 옵션은 '캐시(임시저장)'를 쓰지 않고 매번 최신 데이터를 가져오라는 뜻입니다.
+                    try:
+                        existing_data = conn.read(worksheet="시트1", usecols=list(range(6)), ttl=0)
+                        existing_data = existing_data.dropna(how="all") # 빈 줄 제거
+                    exceptException:
+                    # 만약 시트가 텅 비어있으면 빈 틀을 만듭니다.
+                        existing_data = pd.DataFrame(columns=["날짜", "사용자", "교수님", "목적", "내용", "생성된이메일"])
                 
-                # 3. 새 데이터 만들기
+                # 3. 현재 입력한 새 데이터 만들기
                     new_data = pd.DataFrame([{
                         "날짜": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "사용자": f"{my_name} ({my_id})",
@@ -142,19 +149,22 @@ if submit_btn:
                         "생성된이메일": email_content
                     }])
                 
-                # 4. 합쳐서 다시 저장 (업데이트)
+                # 4. [기존 데이터] + [새 데이터] 합치기 (Concatenate)
                     updated_df = pd.concat([existing_data, new_data], ignore_index=True)
+                
+                # 5. 합쳐진 데이터를 다시 저장하기
                     conn.update(worksheet="시트1", data=updated_df)
                 
-                    print("-> 구글 시트 저장 성공!", flush=True)
+                    print("-> 구글 시트 누적 저장 성공!", flush=True)
                 
                 except Exception as e:
-                    st.error("데이터 저장 중 오류가 발생했습니다.")
+                    # 에러가 나도 사용자에겐 티 안 내고 서버 로그에만 남김
                     print(f"-> 저장 실패: {e}", flush=True)
                     
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
