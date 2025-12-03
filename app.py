@@ -33,7 +33,7 @@ with st.form("email_form"):
     with col2:
         course_name = st.text_input("강의명", placeholder="예: 분자생물학")
         my_division = st.text_input("학과/학부", placeholder="예: 생명공학부")
-        my_id = st.text_input("학번", placeholder="예: 20251234")
+        my_id = st.text_input("학번", placeholder="예: 2025123456")
     
     category = st.radio(
         "메일을 보내는 목적:",
@@ -162,6 +162,7 @@ if submit_btn:
                 
         except Exception as e:
             st.error(f"에러가 발생했습니다: {e}")
+
 
 
 
